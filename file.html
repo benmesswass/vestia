@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>VESTIA — Mockup Mobile</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --panel:#0d1a2d;
+      --panel2:#10233d;
+      --line:rgba(255,255,255,.08);
+      --text:#f5f8ff;
+      --muted:rgba(245,248,255,.68);
+      --blue:#3b82f6;
+      --blue2:#60a5fa;
+      --green:#22c55e;
+      --red:#ef4444;
+      --yellow:#f59e0b;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(59,130,246,.18), transparent 35%),
+        linear-gradient(180deg, #050b14 0%, #07111f 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:16px;
+    }
+    .phone{
+      width:min(100%, 420px);
+      min-height: calc(100vh - 32px);
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:32px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      position:relative;
+    }
+    .topbar{
+      padding:18px 18px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      font-weight:700; letter-spacing:.12em;
+    }
+    .logo{
+      width:34px;height:34px;border-radius:11px;
+      background:linear-gradient(135deg,var(--blue),#1d4ed8);
+      display:grid;place-items:center;
+      box-shadow:0 10px 25px rgba(59,130,246,.35);
+      font-weight:800;
+    }
+    .chip{
+      font-size:12px;
+      color:var(--blue2);
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.2);
+      padding:8px 10px;
+      border-radius:999px;
+    }
+    .screen{display:none; padding:8px 16px 86px;}
+    .screen.active{display:block;}
+    .hero{
+      background:linear-gradient(180deg, rgba(16,35,61,.95), rgba(13,26,45,.9));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:18px;
+      margin-bottom:14px;
+    }
+    h1,h2,h3,p{margin:0}
+    h1{font-size:28px; line-height:1.05; margin-top:8px}
+    h2{font-size:20px; margin-bottom:8px}
+    h3{font-size:16px}
+    p{color:var(--muted); line-height:1.45}
+    .subtitle{margin-top:10px; font-size:14px}
+    .statrow{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px}
+    .card{
+      background:linear-gradient(180deg, rgba(16,35,61,.96), rgba(13,26,45,.92));
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:14px;
+      margin-bottom:12px;
+    }
+    .mini{
+      font-size:12px; color:var(--muted); margin-bottom:6px;
+    }
+    .big{
+      font-size:24px; font-weight:800;
+    }
+    .btnrow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    button,.btn{
+      border:none;
+      border-radius:16px;
+      padding:14px 14px;
+      font-weight:700;
+      color:var(--text);
+      background:linear-gradient(180deg, rgba(59,130,246,1), rgba(37,99,235,1));
+      box-shadow:0 12px 26px rgba(37,99,235,.25);
+      cursor:pointer;
+      text-align:center;
+    }
+    .secondary{
+      background:rgba(255,255,255,.06);
+      box-shadow:none;
+      border:1px solid var(--line);
+    }
+    .list{
+      display:grid; gap:10px;
+    }
+    .item{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:13px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .meta{font-size:12px;color:var(--muted);margin-top:4px}
+    .status{
+      font-size:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(34,197,94,.12);
+      color:#86efac;
+      border:1px solid rgba(34,197,94,.18);
+      white-space:nowrap;
+    }
+    .status.red{background:rgba(239,68,68,.12); color:#fca5a5; border-color:rgba(239,68,68,.18)}
+    .field{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:13px 14px;
+      margin-top:10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .bottomnav{
+      position:absolute;
+      left:0; right:0; bottom:0;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:0;
+      background:rgba(5,11,20,.96);
+      border-top:1px solid var(--line);
+      padding:8px 6px 10px;
+      backdrop-filter: blur(10px);
+    }
+    .nav{
+      color:var(--muted);
+      text-align:center;
+      font-size:11px;
+      padding:8px 4px;
+      border-radius:14px;
+    }
+    .nav.active{
+      color:var(--text);
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.18);
+    }
+    .icon{font-size:18px; display:block; margin-bottom:4px}
+    .qrbox{
+      width:210px; height:210px;
+      margin:14px auto 8px;
+      border-radius:22px;
+      background:
+        linear-gradient(90deg, #fff 10px, transparent 10px) 0 0/30px 30px,
+        linear-gradient(#fff 10px, transparent 10px) 0 0/30px 30px,
+        #0b1220;
+      border:14px solid #fff;
+      box-shadow:0 18px 35px rgba(0,0,0,.25);
+    }
+    .center{text-align:center}
+    .muted{color:var(--muted)}
+    .pill{
+      display:inline-block;
+      margin-top:10px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(59,130,246,.12);
+      border:1px solid rgba(59,130,246,.18);
+      color:#bfdbfe;
+      font-size:12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">V</div>
+        <div>VESTIA</div>
+      </div>
+      <div class="chip">Mockup mobile</div>
+    </div>
+
+    <!-- SCREEN 1 -->
+    <section class="screen active" id="s1">
+      <div class="hero">
+        <p class="chip" style="display:inline-block;margin-bottom:12px;">Vestiaire digital instantané</p>
+        <h1>Plus de tickets perdus.<br>Plus de recherches.<br>Plus de litiges.</h1>
+        <p class="subtitle">Créez un dépôt en quelques secondes, envoyez un QR au client, et restituez en 1 scan.</p>
+        <div class="btnrow">
+          <button onclick="go('s2')">Nouvelle dépose</button>
+          <button class="secondary" onclick="go('s3')">Scanner un QR</button>
+        </div>
+      </div>
+
+      <div class="statrow">
+        <div class="card">
+          <div class="mini">Dépôts aujourd’hui</div>
+          <div class="big">128</div>
+        </div>
+        <div class="card">
+          <div class="mini">Temps moyen</div>
+          <div class="big">9 sec</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Derniers dépôts</h3>
+        <div class="list" style="margin-top:12px;">
+          <div class="item" onclick="go('s5')">
+            <div>
+              <strong>#048</strong>
+              <div class="meta">1 manteau noir · 1 sac</div>
+            </div>
+            <div class="status">En cours</div>
+          </div>
+          <div class="item" onclick="go('s5')">
+            <div>
+              <strong>#047</strong>
+              <div class="meta">2 vestes · 1 parapluie</div>
+            </div>
+            <div class="status">Restitué</div>
+          </div>
+          <div class="item" onclick="go('s6')">
+            <div>
+              <strong>#046</strong>
+              <div class="meta">1 manteau · 1 casque</div>
+            </div>
+            <div class="status red">Litige</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2 -->
+    <section class="screen" id="s2">
+      <div class="card">
+        <h2>Nouvelle dépose</h2>
+        <p>Créer un ticket en moins de 10 secondes.</p>
+        <div class="field"><span>Numéro</span><strong>#049</strong></div>
+        <div class="field"><span>Emplacement</span><strong>Vestiaire A</strong></div>
+        <div class="field"><span>Client</span><strong>SMS</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s4')">Ajouter un objet</button>
+          <button class="secondary" onclick="go('s1')">Retour</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Objets déposés</h3>
+        <div class="field"><span>1 manteau noir</span><strong>Supprimer</strong></div>
+        <div class="field"><span>1 sac à dos</span><strong>Supprimer</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s4')">+ Ajouter</button>
+          <button onclick="go('s5')">Créer le QR</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3 -->
+    <section class="screen" id="s3">
+      <div class="card center">
+        <h2>Scanner un QR</h2>
+        <p>Restitution immédiate au comptoir.</p>
+        <div class="qrbox"></div>
+        <div class="pill">Pointage sécurisé · scan unique</div>
+      </div>
+
+      <div class="card">
+        <h3>Résultat du scan</h3>
+        <div class="field"><span>Ticket</span><strong>#049</strong></div>
+        <div class="field"><span>Contenu</span><strong>1 manteau · 1 sac</strong></div>
+        <div class="field"><span>Statut</span><strong>Prêt à restituer</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s7')">Restituer</button>
+          <button class="secondary" onclick="go('s1')">Annuler</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4 -->
+    <section class="screen" id="s4">
+      <div class="card">
+        <h2>Ajouter un objet</h2>
+        <div class="field"><span>1 manteau noir</span><strong>Quantité x1</strong></div>
+        <div class="field"><span>1 sac à dos</span><strong>Quantité x1</strong></div>
+        <div class="field"><span>+ autre objet</span><strong>Choisir</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s2')">Valider</button>
+          <button class="secondary" onclick="go('s2')">Retour</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5 -->
+    <section class="screen" id="s5">
+      <div class="card center">
+        <h2>QR généré</h2>
+        <p>Envoyé au client par SMS / WhatsApp / lien web.</p>
+        <div class="qrbox"></div>
+        <div class="pill">Ticket #049 · Vestiaire A</div>
+      </div>
+
+      <div class="card">
+        <h3>Résumé du dépôt</h3>
+        <div class="field"><span>Client</span><strong>+33 6 00 00 00 00</strong></div>
+        <div class="field"><span>Objets</span><strong>2</strong></div>
+        <div class="field"><span>Heure</span><strong>23:14</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s3')">Partager QR</button>
+          <button class="secondary" onclick="go('s1')">Terminer</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6 -->
+    <section class="screen" id="s6">
+      <div class="card">
+        <h2>Incidents</h2>
+        <p>Suivi simple des anomalies et litiges.</p>
+        <div class="field"><span>#046 — objet manquant</span><strong>Ouvert</strong></div>
+        <div class="field"><span>#041 — ticket perdu</span><strong>Résolu</strong></div>
+        <div class="field"><span>#039 — mauvaise remise</span><strong>Résolu</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s1')">Retour</button>
+          <button class="secondary" onclick="go('s8')">Voir stats</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 7 -->
+    <section class="screen" id="s7">
+      <div class="card center">
+        <h2>Restitution confirmée</h2>
+        <p>Le dépôt a été récupéré avec succès.</p>
+        <div class="pill" style="background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.18);color:#bbf7d0;">Statut : clôturé</div>
+      </div>
+
+      <div class="card">
+        <h3>Historique</h3>
+        <div class="field"><span>Créé</span><strong>23:14</strong></div>
+        <div class="field"><span>Restitué</span><strong>01:08</strong></div>
+        <div class="field"><span>Durée</span><strong>1h54</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s1')">Accueil</button>
+          <button class="secondary" onclick="go('s6')">Incidents</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8 -->
+    <section class="screen" id="s8">
+      <div class="card">
+        <h2>Statistiques</h2>
+        <div class="statrow">
+          <div class="card" style="margin:0">
+            <div class="mini">Dépôts</div>
+            <div class="big">128</div>
+          </div>
+          <div class="card" style="margin:0">
+            <div class="mini">Litiges</div>
+            <div class="big">2</div>
+          </div>
+        </div>
+        <div class="field"><span>Taux de restitution</span><strong>98,4%</strong></div>
+        <div class="field"><span>Temps moyen</span><strong>9 sec</strong></div>
+        <div class="field"><span>Heure de pointe</span><strong>23:00–00:30</strong></div>
+        <div class="btnrow">
+          <button onclick="go('s1')">Retour</button>
+          <button class="secondary" onclick="go('s6')">Incidents</button>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottomnav">
+      <div class="nav active" id="n1" onclick="go('s1')"><span class="icon">⌂</span>Accueil</div>
+      <div class="nav" id="n2" onclick="go('s2')"><span class="icon">＋</span>Créer</div>
+      <div class="nav" id="n3" onclick="go('s3')"><span class="icon">⌁</span>Scanner</div>
+      <div class="nav" id="n4" onclick="go('s8')"><span class="icon">◌</span>Stats</div>
+    </nav>
+  </div>
+
+  <script>
+    function go(id){
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav').forEach(n => n.classList.remove('active'));
+      if(id==='s1') document.getElementById('n1').classList.add('active');
+      if(id==='s2'||id==='s4'||id==='s5') document.getElementById('n2').classList.add('active');
+      if(id==='s3'||id==='s7') document.getElementById('n3').classList.add('active');
+      if(id==='s6'||id==='s8') document.getElementById('n4').classList.add('active');
+      window.scrollTo(0,0);
+    }
+  </script>
+</body>
+</html>
