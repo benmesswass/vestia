@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>VESTIA — Prototype</title>
+  <style>
+    :root{
+      --bg:#07111f;
+      --bg2:#0b172a;
+      --panel:#0f1c33cc;
+      --panel2:#101f39;
+      --line:rgba(255,255,255,.09);
+      --text:#eef4ff;
+      --muted:#94a3c5;
+      --blue:#4f8cff;
+      --blue2:#7aa8ff;
+      --green:#22c55e;
+      --orange:#f59e0b;
+      --red:#ef4444;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(79,140,255,.28), transparent 55%),
+        radial-gradient(900px 600px at 80% 0%, rgba(122,168,255,.14), transparent 50%),
+        linear-gradient(180deg, #06101d 0%, #091425 100%);
+      overflow-x:hidden;
+    }
+    .app{
+      max-width:480px;
+      margin:0 auto;
+      min-height:100vh;
+      position:relative;
+    }
+    .topbar{
+      position:sticky; top:0; z-index:20;
+      padding:18px 18px 10px;
+      backdrop-filter: blur(18px);
+      background:linear-gradient(180deg, rgba(7,17,31,.94), rgba(7,17,31,.72));
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .brand{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .logo{
+      display:flex; align-items:center; gap:12px;
+    }
+    .mark{
+      width:38px; height:38px; border-radius:13px;
+      background:linear-gradient(145deg, #2d63ff, #8ab3ff);
+      box-shadow:0 8px 30px rgba(79,140,255,.38);
+      position:relative;
+      overflow:hidden;
+    }
+    .mark:after{
+      content:"";
+      position:absolute; inset:9px 12px 9px 12px;
+      border:2px solid rgba(255,255,255,.92);
+      border-top:none;
+      border-radius:0 0 10px 10px;
+      transform:translateY(1px);
+    }
+    .title{font-weight:700; letter-spacing:.08em; font-size:12px; color:#cfe0ff}
+    .subtitle{font-size:12px; color:var(--muted); margin-top:2px}
+    .chip{
+      padding:8px 12px;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:999px;
+      font-size:12px;
+      color:#d7e5ff;
+      background:rgba(255,255,255,.04);
+    }
+
+    .screen{display:none; padding:18px 18px 96px; animation:fadeIn .22s ease}
+    .screen.active{display:block}
+    @keyframes fadeIn{from{opacity:.0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+    .hero{
+      padding:18px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow:var(--shadow);
+      border-radius:28px;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-60px -40px auto auto;
+      width:180px; height:180px; border-radius:50%;
+      background:radial-gradient(circle, rgba(79,140,255,.28), transparent 70%);
+      pointer-events:none;
+    }
+    h1,h2,h3,p{margin:0}
+    h1{font-size:28px; line-height:1.05; letter-spacing:-.04em}
+    h2{font-size:20px; letter-spacing:-.03em}
+    h3{font-size:15px}
+    .lead{color:var(--muted); margin-top:10px; line-height:1.45; font-size:14px}
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+    .btn{
+      appearance:none; border:none; cursor:pointer;
+      border-radius:16px;
+      padding:14px 14px;
+      font-weight:600;
+      font-size:14px;
+      color:var(--text);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease, opacity .15s ease;
+      width:100%;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn-primary{
+      background:linear-gradient(135deg, #4f8cff, #7aa8ff);
+      box-shadow:0 12px 30px rgba(79,140,255,.35);
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .btn-ghost{
+      background:transparent;
+      border:1px solid rgba(255,255,255,.08);
+      color:#d8e6ff;
+    }
+
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px}
+    .card{
+      background:linear-gradient(180deg, rgba(16,31,57,.94), rgba(9,18,34,.98));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--shadow);
+    }
+    .stat{font-size:24px; font-weight:750; letter-spacing:-.04em; margin-top:8px}
+    .muted{color:var(--muted); font-size:12px; line-height:1.45}
+    .list{display:grid; gap:10px; margin-top:14px}
+    .item{
+      padding:14px;
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+    }
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--blue);box-shadow:0 0 18px rgba(79,140,255,.7)}
+    .pill{
+      font-size:11px; padding:6px 10px; border-radius:999px;
+      background:rgba(79,140,255,.12);
+      color:#b9d0ff;
+      border:1px solid rgba(79,140,255,.18);
+      white-space:nowrap;
+    }
+    .section{margin-top:16px}
+    .input{
+      width:100%;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      color:var(--text);
+      border-radius:16px;
+      padding:14px 14px;
+      outline:none;
+      font-size:14px;
+    }
+    .input::placeholder{color:#7c8fb2}
+    .seg{
+      display:flex; gap:8px; margin-top:12px;
+    }
+    .seg button{
+      flex:1;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      color:#cfe0ff;
+      padding:12px;
+      border-radius:14px;
+      font-weight:600;
+    }
+    .seg button.active{
+      background:linear-gradient(135deg, rgba(79,140,255,.25), rgba(122,168,255,.16));
+      border-color:rgba(122,168,255,.3);
+      box-shadow:0 10px 30px rgba(79,140,255,.12);
+    }
+    .bottomnav{
+      position:fixed; left:50%; transform:translateX(-50%);
+      bottom:0; width:min(100%,480px);
+      padding:10px 14px 14px;
+      background:linear-gradient(180deg, rgba(7,17,31,.15), rgba(7,17,31,.96) 25%, rgba(7,17,31,.98));
+      backdrop-filter: blur(20px);
+      border-top:1px solid rgba(255,255,255,.06);
+      display:grid; grid-template-columns:repeat(4,1fr); gap:8px;
+      z-index:30;
+    }
+    .navbtn{
+      border:none; background:transparent; color:#8ea3c9;
+      padding:10px 6px; border-radius:14px;
+      font-size:11px; font-weight:600;
+    }
+    .navbtn.active{
+      color:#eff5ff;
+      background:rgba(79,140,255,.14);
+      box-shadow:inset 0 0 0 1px rgba(122,168,255,.16);
+    }
+    .qr{
+      width:210px; height:210px; border-radius:24px;
+      margin:16px auto 0;
+      background:
+        linear-gradient(90deg, #fff 10%, transparent 10%) 0 0/30px 30px,
+        linear-gradient(#fff 10%, transparent 10%) 0 0/30px 30px,
+        #0b1220;
+      border:10px solid #fff;
+      box-shadow:0 20px 50px rgba(0,0,0,.4);
+      position:relative;
+    }
+    .qr:before,.qr:after{
+      content:""; position:absolute; inset:16px; border:3px solid rgba(79,140,255,.85); border-radius:18px;
+      clip-path: inset(0 0 60% 60%);
+    }
+    .qr:after{inset:34px; clip-path: inset(60% 0 0 60%)}
+    .pulse{
+      display:inline-block;
+      width:10px;height:10px;border-radius:999px;background:var(--green);
+      box-shadow:0 0 0 0 rgba(34,197,94,.55);
+      animation:pulse 1.5s infinite;
+      margin-right:8px;
+    }
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}70%{box-shadow:0 0 0 12px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+    .slide{
+      animation:slideUp .22s ease;
+    }
+    @keyframes slideUp{from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none}}
+    .mini{
+      display:flex; gap:10px; align-items:center;
+    }
+    .avatar{
+      width:38px; height:38px; border-radius:14px; background:linear-gradient(135deg, rgba(79,140,255,.25), rgba(255,255,255,.06));
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .small{font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">
+          <div class="mark"></div>
+          <div>
+            <div class="title">VESTIA</div>
+            <div class="subtitle" id="screenLabel">Accueil</div>
+          </div>
+        </div>
+        <div class="chip" id="modeChip">Staff</div>
+      </div>
+    </div>
+
+    <main>
+      <section class="screen active" id="home">
+        <div class="hero slide">
+          <h1>Une consigne instantanée, premium, sans friction.</h1>
+          <p class="lead">Prototype VESTIA pour lieux à fort débit. Navigation réelle entre client, staff et admin.</p>
+          <div class="row">
+            <button class="btn btn-primary" onclick="go('staff')">Entrer en mode staff</button>
+            <button class="btn btn-secondary" onclick="go('client')">Voir côté client</button>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <div class="card">
+            <div class="muted">Délais moyens</div>
+            <div class="stat">8 s</div>
+            <div class="muted">Création d’un dépôt</div>
+          </div>
+          <div class="card">
+            <div class="muted">Litiges</div>
+            <div class="stat">-42%</div>
+            <div class="muted">grâce au QR et à l’historique</div>
+          </div>
+        </div>
+
+        <div class="section card">
+          <h3>Parcours principal</h3>
+          <div class="list">
+            <div class="item"><div><strong>Staff</strong><div class="muted">Créer, scanner, restituer</div></div><span class="pill">opérationnel</span></div>
+            <div class="item"><div><strong>Client</strong><div class="muted">Ticket web + SMS</div></div><span class="pill">simple</span></div>
+            <div class="item"><div><strong>Admin</strong><div class="muted">Stats + incidents</div></div><span class="pill">pilotage</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="staff">
+        <div class="card slide">
+          <div class="mini">
+            <div class="avatar"></div>
+            <div>
+              <h2>Mode staff</h2>
+              <div class="muted">Création rapide d’un dépôt</div>
+            </div>
+          </div>
+
+          <div class="section">
+            <input class="input" value="N° 0248" />
+            <input class="input" style="margin-top:10px" placeholder="Nom client (optionnel)" value="Sarah L." />
+            <input class="input" style="margin-top:10px" placeholder="Articles" value="Manteau · Sac · Casque" />
+            <input class="input" style="margin-top:10px" placeholder="Emplacement" value="Rack B / Zone 2" />
+          </div>
+
+          <div class="section">
+            <div class="seg">
+              <button class="active">Web QR</button>
+              <button>SMS</button>
+            </div>
+          </div>
+
+          <div class="section row">
+            <button class="btn btn-primary" onclick="go('qr')">Créer le ticket</button>
+            <button class="btn btn-secondary" onclick="go('scan')">Scanner un ticket</button>
+          </div>
+        </div>
+
+        <div class="section card">
+          <h3>Actions rapides</h3>
+          <div class="list">
+            <div class="item"><div><strong>Restitution rapide</strong><div class="muted">1 tap après scan</div></div><span class="pill">OK</span></div>
+            <div class="item"><div><strong>Historique</strong><div class="muted">Tracer chaque mouvement</div></div><span class="pill">24h</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="qr">
+        <div class="card slide" style="text-align:center">
+          <div class="muted"><span class="pulse"></span>Ticket créé</div>
+          <h2 style="margin-top:8px">Dépôt #0248</h2>
+          <div class="qr"></div>
+          <div class="row" style="margin-top:18px">
+            <button class="btn btn-primary" onclick="go('scan')">Tester le scan</button>
+            <button class="btn btn-ghost" onclick="go('staff')">Retour staff</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="scan">
+        <div class="card slide">
+          <h2>Scanner un ticket</h2>
+          <p class="lead">Interface de restitution ultra rapide.</p>
+          <div class="section item">
+            <div>
+              <strong>Ticket #0248</strong>
+              <div class="muted">Manteau · Sac · Casque</div>
+            </div>
+            <span class="pill">validé</span>
+          </div>
+          <div class="section">
+            <button class="btn btn-primary" onclick="go('return')">Restituer les articles</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="return">
+        <div class="card slide">
+          <h2>Restitution confirmée</h2>
+          <p class="lead">Mouvement enregistré, litige évité.</p>
+          <div class="section item">
+            <div><strong>Remis à Sarah L.</strong><div class="muted">22:41 · Staff: Maya</div></div>
+            <span class="pill" style="background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.2);color:#b9f7cd">terminé</span>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="go('staff')">Nouveau dépôt</button>
+            <button class="btn btn-secondary" onclick="go('admin')">Voir admin</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="client">
+        <div class="card slide">
+          <h2>Espace client</h2>
+          <p class="lead">Ticket digital accessible sans application.</p>
+          <div class="section item">
+            <div>
+              <strong>Numéro 0248</strong>
+              <div class="muted">Rack B / Zone 2</div>
+            </div>
+            <span class="pill">en attente</span>
+          </div>
+          <div class="section item">
+            <div>
+              <strong>Manteau</strong>
+              <div class="muted">Sac · Casque</div>
+            </div>
+            <span class="pill">3 articles</span>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="go('staff')">Retour au staff</button>
+            <button class="btn btn-secondary" onclick="go('admin')">Console admin</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="admin">
+        <div class="card slide">
+          <h2>Admin</h2>
+          <p class="lead">Vision venue, performance et incidents.</p>
+          <div class="grid2">
+            <div class="card" style="box-shadow:none">
+              <div class="muted">Dépôts</div>
+              <div class="stat">184</div>
+            </div>
+            <div class="card" style="box-shadow:none">
+              <div class="muted">Incidents</div>
+              <div class="stat">2</div>
+            </div>
+          </div>
+          <div class="section list">
+            <div class="item"><div><strong>Temps moyen</strong><div class="muted">Création: 7.8s</div></div><span class="pill">excellent</span></div>
+            <div class="item"><div><strong>Tickets SMS</strong><div class="muted">14% des dépôts</div></div><span class="pill">actif</span></div>
+            <div class="item"><div><strong>Export incidents</strong><div class="muted">CSV / PDF</div></div><span class="pill">dispo</span></div>
+          </div>
+          <div class="row" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="go('home')">Retour accueil</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="bottomnav">
+      <button class="navbtn active" onclick="go('home')">Home</button>
+      <button class="navbtn" onclick="go('staff')">Staff</button>
+      <button class="navbtn" onclick="go('client')">Client</button>
+      <button class="navbtn" onclick="go('admin')">Admin</button>
+    </nav>
+  </div>
+
+  <script>
+    const labels = {
+      home: "Accueil",
+      staff: "Écran staff",
+      qr: "QR ticket",
+      scan: "Scan",
+      return: "Restitution",
+      client: "Écran client",
+      admin: "Écran admin"
+    };
+
+    const modes = {
+      home: "Staff",
+      staff: "Staff",
+      qr: "Staff",
+      scan: "Staff",
+      return: "Staff",
+      client: "Client",
+      admin: "Admin"
+    };
+
+    function go(id){
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const el = document.getElementById(id);
+      el.classList.add('active');
+      el.classList.remove('slide');
+      void el.offsetWidth;
+      el.classList.add('slide');
+
+      document.getElementById('screenLabel').textContent = labels[id] || 'VESTIA';
+      document.getElementById('modeChip').textContent = modes[id] || 'Staff';
+
+      document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('active'));
+      const map = {home:0, staff:1, client:2, admin:3, qr:1, scan:1, return:1};
+      document.querySelectorAll('.navbtn')[map[id]].classList.add('active');
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
