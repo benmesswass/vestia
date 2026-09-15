@@ -1,0 +1,306 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ */
+/* VESTIA — design tokens                                              */
+/* Blanc / gris très clair / navy · accent bleu électrique             */
+/* Vert = positif · Orange & rouge = alertes uniquement                */
+/* ------------------------------------------------------------------ */
+@theme {
+  --color-canvas: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-subtle: #fafbfc;
+  --color-line: #e5e8ee;
+  --color-line-strong: #d3d9e3;
+
+  --color-navy: #0a1a33;
+  --color-navy-600: #132c4f;
+  --color-navy-500: #1d3d69;
+
+  --color-ink: #0f1b2d;
+  --color-muted: #63718a;
+  --color-faint: #8d99ad;
+
+  --color-accent: #1f5aff;
+  --color-accent-hover: #1746d4;
+  --color-accent-soft: #eef3ff;
+  --color-accent-line: #c9d9ff;
+
+  --color-positive: #17a34a;
+  --color-positive-soft: #e9f8ef;
+  --color-positive-line: #bde9cd;
+
+  --color-warn: #e08600;
+  --color-warn-soft: #fff5e6;
+  --color-warn-line: #f7dcae;
+
+  --color-danger: #d92d20;
+  --color-danger-soft: #fdeceb;
+  --color-danger-line: #f6c9c5;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+
+  --radius-card: 14px;
+
+  --shadow-xs: 0 1px 2px rgba(15, 27, 45, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 27, 45, 0.07), 0 1px 2px rgba(15, 27, 45, 0.04);
+  --shadow-md: 0 6px 16px -4px rgba(15, 27, 45, 0.1), 0 2px 6px -2px rgba(15, 27, 45, 0.05);
+  --shadow-lg: 0 18px 40px -12px rgba(15, 27, 45, 0.18);
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "tnum";
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Les champs de formulaire portent déjà leur propre anneau de focus : on
+   évite le double liseré. */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+/* Discrete, fast scrollbars — the app is dense by nature. */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d6dce6;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #bcc5d3;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Animations — perceptibles mais jamais bloquantes                    */
+/* ------------------------------------------------------------------ */
+@keyframes v-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes v-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes v-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes v-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes v-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes v-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes v-pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(23, 163, 74, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(23, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(23, 163, 74, 0);
+  }
+}
+
+@keyframes v-scanline {
+  0% {
+    transform: translateY(-46%);
+  }
+  50% {
+    transform: translateY(46%);
+  }
+  100% {
+    transform: translateY(-46%);
+  }
+}
+
+@keyframes v-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes v-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: v-fade-up 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-fade {
+    animation: v-fade 0.3s ease both;
+  }
+  .animate-scale-in {
+    animation: v-scale-in 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-slide-in {
+    animation: v-slide-in 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-pop {
+    animation: v-pop 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .animate-spin-slow {
+    animation: v-spin 0.7s linear infinite;
+  }
+  .animate-pulse-ring {
+    animation: v-pulse-ring 1.8s ease-out infinite;
+  }
+  .animate-scanline {
+    animation: v-scanline 2.4s ease-in-out infinite;
+  }
+
+  /* Staggered list reveals — set `--d` per item. */
+  .stagger {
+    animation: v-fade-up 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #eef1f6;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    );
+    animation: v-shimmer 1.4s infinite;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .press {
+    transition:
+      transform 0.12s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      color 0.15s ease;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.975);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Accessibilité : on respecte prefers-reduced-motion                  */
+/* ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .press:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
